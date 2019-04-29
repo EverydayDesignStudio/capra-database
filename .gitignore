@@ -1,0 +1,10 @@
+# SQL
+*.sqlite
+
+# Images
+/hike*/
+/exports/
+
+# File System
+.DS_Store
+.idea/

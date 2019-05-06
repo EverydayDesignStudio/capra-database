@@ -6,34 +6,33 @@ import sqlite3
 from capra_data_types import Picture, Hike
 from sql_controller import SQLController
 
+modes = ('time', 'altitude', 'color')
 
 def main():
-    while True:
-        # char = getch.getch()
-        # if char == '-':
-        #     print('NEXT')
-        # elif char == '-':
-        #     print('PREVIOUS')
-
-        keycode = ord(getch.getch())
-
-        if keycode == 67:
-            print('NEXT')
-        elif keycode == 68:
-            print('PREVIOUS')
-        elif keycode == 109:
-            print('CHANGE MODE')
-        
-
-
-    # print('Starting SQLite3 program')
+    print('Starting SQLite3 program')
+    mode_index = 0
 
     # current_picture = Picture()
     # current_hike = Hike()
 
-    # sql_controller = SQLController()
-    # current_picture = sql_controller.get_first_time_picture()
-    # print(current_picture.altitude)
+    sql_controller = SQLController()
+    current_picture = sql_controller.get_first_time_picture()
+
+    while True:
+        keycode = ord(getch.getch())
+        if keycode == 61:
+            print('NEXT')
+        elif keycode == 45:
+            print('PREVIOUS')
+        elif keycode == 67:
+            print('NEXT across hikes')
+            # get next picture from current mode
+        elif keycode == 68:
+            print('PREVIOUS across hikes')
+            # get previous picture from current mode
+        elif keycode == 109:
+            print('CHANGE MODE to: ' + modes[mode_index % 3])
+            mode_index += 1
 
     # count = 1
     # while count < 100:

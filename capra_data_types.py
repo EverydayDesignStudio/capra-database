@@ -14,6 +14,11 @@ class Picture:
         self.camera2 = camera2
         self.camera3 = camera3
 
+    def print_obj(self):
+        print('({id}, {t}, {alt}, {col}, {hike_id}, {index}, {c1}, {c2}, {c3})\
+            '.format(id=self.picture_id, t=self.time, alt=self.altitude,
+            col=self.color, hike_id=self.hike_id, index=self.index_in_hike,
+            c1=self.camera1, c2=self.camera2, c3=self.camera3))
 
 # Defines a hike object
 

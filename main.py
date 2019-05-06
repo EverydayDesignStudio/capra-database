@@ -1,45 +1,80 @@
 #!/usr/bin/env python3
 
+import getch
 import time
 import sqlite3
-from sql_parser import SQLParser
-from sql_statements import SQLStatements
-
-SQLITE_DB = 'capra.db'
-statements = SQLStatements()
+from capra_data_types import Picture, Hike
+from sql_controller import SQLController
 
 
 def main():
-    print('Starting SQLite3 program')
+    while True:
+        # char = getch.getch()
+        # if char == '-':
+        #     print('NEXT')
+        # elif char == '-':
+        #     print('PREVIOUS')
 
-    connection = sqlite3.connect(SQLITE_DB)
+        keycode = ord(getch.getch())
+
+        if keycode == 67:
+            print('NEXT')
+        elif keycode == 68:
+            print('PREVIOUS')
+        elif keycode == 109:
+            print('CHANGE MODE')
+        
+
+
+    # print('Starting SQLite3 program')
+
+    # current_picture = Picture()
+    # current_hike = Hike()
+
+    # sql_controller = SQLController()
+    # current_picture = sql_controller.get_first_time_picture()
+    # print(current_picture.altitude)
+
+    # count = 1
+    # while count < 100:
+    #     current_picture = sql_controller.next_altitude_picture(current_picture)
+    #     print('altitude: ' + str(current_picture.altitude) + '  |  time: ' + str(current_picture.time))
+    #     count += 1
+
+    # sql_controller.next_altitude_picture(current_picture)
+
     # get_picture(connection, 1, 54)
-    time_for_full_hike(connection)
+    # get_picture(connection, 1, 94)
+    # time_for_full_hike(connection)
 
 
-def time_for_full_hike(connection):
-    start_time = time.time()
-    cursor = connection.cursor()
-    index = 1
-    while index <= 240:
-        cursor.execute(statements.select_photo(1, index))
-        index += 1
-        all_rows = cursor.fetchall()
-        print(all_rows[0])
+# def time_for_full_hike(connection):
+#     start_time = time.time()
+#     cursor = connection.cursor()
+#     index = 1
+#     while index <= 240:
+#         cursor.execute(statements.select_picture(1, index))
+#         index += 1
+#         all_rows = cursor.fetchall()
+#         print(all_rows[0])
 
-    end_time = time.time()
-    print('start: ' + str(start_time))
-    print('end: ' + str(end_time))
-    print(end_time - start_time)
+#     end_time = time.time()
+#     print('start: ' + str(start_time))
+#     print('end: ' + str(end_time))
+#     print(end_time - start_time)
 
 
-def get_picture(connection, hike_id, index_in_hike) -> None:
-    cursor = connection.cursor()
-    cursor.execute(statements.select_photo(hike_id, index_in_hike))
-    all_rows = cursor.fetchall()
-    print(all_rows[0][1])
-    # for row in all_rows:
-    #     print(row[0])
+# def get_picture(connection, hike_id, index_in_hike) -> None:
+#     cursor = connection.cursor()
+#     cursor.execute(statements.select_picture(hike_id, index_in_hike))
+#     all_rows = cursor.fetchall()
+#     print(all_rows[0])
+
+#     # for row in all_rows:
+#     #     print(row[0])
+
+#     connection.commit()
+#     # connection.close()
 
 
 # def create_db(c):
@@ -72,6 +107,9 @@ def get_picture(connection, hike_id, index_in_hike) -> None:
 #         '.format(tn=TABLE_NAME_1, cn=COLUMN_1, kw=keyword))
 #     all_rows = c.fetchall()
 #     print(all_rows)
+
+
+
 
 if __name__ == "__main__":
     main()

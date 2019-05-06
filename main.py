@@ -8,11 +8,11 @@ from sql_controller import SQLController
 
 modes = ('time', 'altitude', 'color')
 
+
 def main():
     print('Starting SQLite3 program')
     mode_index = 0
 
-    # current_picture = Picture()
     # current_hike = Hike()
 
     sql_controller = SQLController()
@@ -26,6 +26,8 @@ def main():
             print('PREVIOUS')
         elif keycode == 67:
             print('NEXT across hikes')
+            current_picture = sql_controller.next_altitude_picture(current_picture)
+            current_picture.print_obj()
             # get next picture from current mode
         elif keycode == 68:
             print('PREVIOUS across hikes')
@@ -33,18 +35,6 @@ def main():
         elif keycode == 109:
             print('CHANGE MODE to: ' + modes[mode_index % 3])
             mode_index += 1
-
-    # count = 1
-    # while count < 100:
-    #     current_picture = sql_controller.next_altitude_picture(current_picture)
-    #     print('altitude: ' + str(current_picture.altitude) + '  |  time: ' + str(current_picture.time))
-    #     count += 1
-
-    # sql_controller.next_altitude_picture(current_picture)
-
-    # get_picture(connection, 1, 54)
-    # get_picture(connection, 1, 94)
-    # time_for_full_hike(connection)
 
 
 # def time_for_full_hike(connection):
@@ -106,9 +96,6 @@ def main():
 #         '.format(tn=TABLE_NAME_1, cn=COLUMN_1, kw=keyword))
 #     all_rows = c.fetchall()
 #     print(all_rows)
-
-
-
 
 if __name__ == "__main__":
     main()

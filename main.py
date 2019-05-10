@@ -13,10 +13,14 @@ def main():
     print('Starting SQLite3 program')
     mode_index = 0
 
-    # current_hike = Hike()
+    # run_tests()
 
     sql_controller = SQLController()
-    current_picture = sql_controller.get_first_time_picture()
+    # current_picture = sql_controller.get_first_time_picture()
+    # current_picture = sql_controller.get_greatest_altitude_picture()
+    current_picture = sql_controller.get_least_altitude_picture()
+
+    # current_hike = sql_controller.get_hike_from_picture()
 
     while True:
         keycode = ord(getch.getch())
@@ -26,16 +30,31 @@ def main():
             print('PREVIOUS')
         elif keycode == 67:
             print('NEXT across hikes')
-            current_picture = sql_controller.next_altitude_picture(current_picture)
+            current_picture = sql_controller.next_altitude_picture_across_hikes(current_picture)
             current_picture.print_obj()
             # get next picture from current mode
         elif keycode == 68:
             print('PREVIOUS across hikes')
+            current_picture = sql_controller.previous_altitude_picture_across_hikes(current_picture)
+            current_picture.print_obj()
             # get previous picture from current mode
         elif keycode == 109:
             print('CHANGE MODE to: ' + modes[mode_index % 3])
             mode_index += 1
 
+
+def run_tests():
+    sql_controller = SQLController()
+
+    first = sql_controller.get_first_time_picture()
+    first.print_obj()
+    last = sql_controller.get_last_time_picture()
+    last.print_obj()
+
+    # biggest = sql_controller.get_greatest_altitude_picture()
+    # biggest.print_obj()
+    # least = sql_controller.get_least_altitude_picture()
+    # least.print_obj()
 
 # def time_for_full_hike(connection):
 #     start_time = time.time()

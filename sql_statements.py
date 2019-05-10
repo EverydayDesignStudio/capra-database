@@ -9,7 +9,7 @@ class SQLStatements:
             index_in_hike={index}'.format(id=hike_id, index=index_in_hike)
         return statement
 
-    # Time across Hikes
+    # Time - first & last across hikes
     def select_by_time_first_picture(self) -> str:
         statement = 'SELECT * FROM pictures ORDER BY time ASC LIMIT 1'
         return statement
@@ -18,9 +18,16 @@ class SQLStatements:
         statement = 'SELECT * FROM pictures ORDER BY time DESC LIMIT 1'
         return statement
 
-    # def select_by_time_next_picture() -> str:
+    # Time - next & previous across hikes
+    def select_by_time_next_picture(self, time: float) -> str:
+        statement = 'SELECT * FROM pictures WHERE time>{t} \
+            ORDER BY time ASC LIMIT 1'.format(t=time)
+        return statement
 
-    # def select_by_time_previous_picture() -> str:
+    def select_by_time_previous_picture(self, time: float) -> str:
+        statement = 'SELECT * FROM pictures WHERE time<{t} \
+            ORDER BY time DESC LIMIT 1'.format(t=time)
+        return statement
 
     # Altitude - greatest & least across hikes
     def select_by_altitude_greatest_picture(self) -> str:

@@ -35,6 +35,24 @@ class SQLController:
         sql = self.statements.select_by_time_last_picture()
         return self._get_picture_from_sql_statement(sql)
 
+    def next_time_picture_across_hikes(self, current_picture: Picture) -> Picture:
+        cursor = self.connection.cursor()
+        cursor.execute(self.statements.select_by_time_next_picture(current_picture.time))
+        all_rows = cursor.fetchall()
+        if not all_rows:
+            return self.get_first_time_picture()
+        else:  # there is a next time picture
+            return self._build_picture_from_row(all_rows[0])
+
+    def previous_time_picture_across_hikes(self, current_picture: Picture) -> Picture:
+        cursor = self.connection.cursor()
+        cursor.execute(self.statements.select_by_time_previous_picture(current_picture.time))
+        all_rows = cursor.fetchall()
+        if not all_rows:
+            return self.get_last_time_picture()
+        else:  # there is a previous time picture
+            return self._build_picture_from_row(all_rows[0])
+
     # Altitude - get starting picture
     def get_greatest_altitude_picture(self) -> Picture:
         sql = self.statements.select_by_altitude_greatest_picture()

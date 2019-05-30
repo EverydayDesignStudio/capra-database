@@ -12,22 +12,32 @@ modes = ('time', 'altitude', 'color')
 def main():
     print('Starting SQLite3 program')
     mode_index = 0
-
-    # run_tests()
-
     sql_controller = SQLController()
     # current_picture = sql_controller.get_first_time_picture()
     # current_picture = sql_controller.get_greatest_altitude_picture()
     current_picture = sql_controller.get_least_altitude_picture()
 
-    # current_hike = sql_controller.get_hike_from_picture()
-
     while True:
         keycode = ord(getch.getch())
         if keycode == 61:       # Next
-            print('NEXT')
+            print('NEXT in hike')
+            if mode_index % 3 == 0:     # Time
+                current_picture = sql_controller.next_time_picture_in_hike(current_picture)
+            elif mode_index % 3 == 1:   # Altitude
+                current_picture = sql_controller.next_altitude_picture_in_hike(current_picture)
+            elif mode_index % 3 == 2:   # Color
+                print('color')
+            current_picture.print_obj()
         elif keycode == 45:     # Previous
-            print('PREVIOUS')
+            print('PREVIOUS in hike')
+            if mode_index % 3 == 0:     # Time
+                current_picture = sql_controller.previous_time_picture_in_hike(current_picture)
+            elif mode_index % 3 == 1:   # Altitude
+                current_picture = sql_controller.previous_altitude_picture_in_hike(current_picture)
+            elif mode_index % 3 == 2:   # Color
+                print('color')
+            current_picture.print_obj()
+
         elif keycode == 67:     # Next across hikes
             print('NEXT across hikes')
             if mode_index % 3 == 0:     # Time

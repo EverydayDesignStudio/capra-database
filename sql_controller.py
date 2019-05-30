@@ -26,7 +26,7 @@ class SQLController:
         picture = self._build_picture_from_row(all_rows[0])
         return picture
 
-    # Time
+    # Time - across hikes
     def get_first_time_picture(self) -> Picture:
         sql = self.statements.select_by_time_first_picture()
         return self._get_picture_from_sql_statement(sql)
@@ -51,6 +51,39 @@ class SQLController:
         if not all_rows:
             return self.get_last_time_picture()
         else:  # there is a previous time picture
+            return self._build_picture_from_row(all_rows[0])
+
+    # Time - in a hike
+    def get_first_time_picture_in_hike(self, hike_id: float) -> Picture:
+        sql = self.statements.select_by_time_first_picture_in_hike(hike_id)
+        return self._get_picture_from_sql_statement(sql)
+
+    def get_last_time_picture_in_hike(self, hike_id: float) -> Picture:
+        sql = self.statements.select_by_time_last_picture_in_hike(hike_id)
+        return self._get_picture_from_sql_statement(sql)
+
+    def next_time_picture_in_hike(self, current_picture: Picture) -> Picture:
+        cursor = self.connection.cursor()
+        h = current_picture.hike_id
+        t = current_picture.time
+
+        cursor.execute(self.statements.select_by_time_next_picture_in_hike(hike_id=h, time=t))
+        all_rows = cursor.fetchall()
+        if not all_rows:
+            return self.get_first_time_picture_in_hike(hike_id=h)
+        else:  # there is a next time picture
+            return self._build_picture_from_row(all_rows[0])
+
+    def previous_time_picture_in_hike(self, current_picture: Picture) -> Picture:
+        cursor = self.connection.cursor()
+        h = current_picture.hike_id
+        t = current_picture.time
+
+        cursor.execute(self.statements.select_by_time_previous_picture_in_hike(hike_id=h, time=t))
+        all_rows = cursor.fetchall()
+        if not all_rows:
+            return self.get_last_time_picture_in_hike(hike_id=h)
+        else:  # there is a next time picture
             return self._build_picture_from_row(all_rows[0])
 
     # Altitude - get starting picture
@@ -108,4 +141,57 @@ class SQLController:
         else:  # there is a previous picture
             return self._build_picture_from_row(all_rows[0])
 
-    # Altitude - next & previous in one hike
+    # Altitude - greatest & least in a hike
+    def get_greatest_altitude_picture_in_hike(self, hike_id: float) -> Picture:
+        sql = self.statements.select_by_altitude_greatest_picture_in_hike(hike_id)
+        return self._get_picture_from_sql_statement(sql)
+
+    def get_least_altitude_picture_in_hike(self, hike_id: float) -> Picture:
+        sql = self.statements.select_by_altitude_least_picture_in_hike(hike_id)
+        return self._get_picture_from_sql_statement(sql)
+
+    # Altitude - next & previous in a hike
+    def next_altitude_picture_in_hike(self, current_picture: Picture) -> Picture:
+        cursor = self.connection.cursor()
+        h = current_picture.hike_id
+        t = current_picture.time
+        alt = current_picture.altitude
+
+        cursor.execute(self.statements.find_size_by_altitude_greater_time_in_hike(hike_id=h, altitude=alt, time=t))
+        all_rows = cursor.fetchall()
+        count = all_rows[0][0]
+        # print(count)
+        if count == 0:
+            cursor.execute(self.statements.select_by_greater_altitude_next_picture_in_hike(hike_id=h, altitude=alt))
+        elif count > 0:
+            cursor.execute(
+                self.statements.select_by_equal_altitude_next_picture_in_hike(hike_id=h, altitude=alt, time=t))
+        all_rows = cursor.fetchall()
+
+        if not all_rows:
+            return self.get_least_altitude_picture_in_hike(hike_id=h)
+        else:
+            return self._build_picture_from_row(all_rows[0])
+
+    def previous_altitude_picture_in_hike(self, current_picture: Picture) -> Picture:
+        cursor = self.connection.cursor()
+        h = current_picture.hike_id
+        t = current_picture.time
+        alt = current_picture.altitude
+
+        cursor.execute(self.statements.find_size_by_altitude_less_time_in_hike(hike_id=h, altitude=alt, time=t))
+        all_rows = cursor.fetchall()
+        count = all_rows[0][0]
+
+        if count == 0:
+            cursor.execute(self.statements.select_by_less_altitude_previous_picture_in_hike(hike_id=h, altitude=alt))
+        elif count > 0:
+            cursor.execute(
+                self.statements.select_by_equal_altitude_previous_picture_in_hike(hike_id=h, altitude=alt, time=t))
+        all_rows = cursor.fetchall()
+
+        # end of the list of previous altitudes, loop back around to greatest altitude
+        if not all_rows:
+            return self.get_greatest_altitude_picture_in_hike(hike_id=h)
+        else:  # there is a previous picture in hike
+            return self._build_picture_from_row(all_rows[0])

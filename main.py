@@ -4,7 +4,7 @@ import getch
 import time
 import sqlite3
 from capra_data_types import Picture, Hike
-from cvs_to_sql import CSVtoSQL
+from csv_to_sql import CSVtoSQL
 from sql_controller import SQLController
 
 modes = ('time', 'altitude', 'color')

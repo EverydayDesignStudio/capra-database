@@ -16,11 +16,11 @@ class CSVtoSQL:
 
     def add(self):
         for i in range(8, 16):
-            self.add_hike_from_csv(i)
-
             path = f'/Volumes/Capra/jordan-hike{i}/meta.csv'
-            folder = f'/jordan-hike{i}'
+            folder = f'/jordan-hike{i}/'
             self.add_pictures_from_csv(path, i, folder)
+
+            # self.add_hike_from_csv(i)
 
     def add_hike_from_csv(self, hike: float):
         cursor = self.connection.cursor()

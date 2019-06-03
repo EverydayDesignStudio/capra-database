@@ -4,6 +4,7 @@ import getch
 import time
 import sqlite3
 from capra_data_types import Picture, Hike
+from cvs_to_sql import CSVtoSQL
 from sql_controller import SQLController
 
 modes = ('time', 'altitude', 'color')
@@ -13,9 +14,9 @@ def main():
     print('Starting SQLite3 program')
     mode_index = 0
     sql_controller = SQLController()
-    # current_picture = sql_controller.get_first_time_picture()
+    current_picture = sql_controller.get_first_time_picture()
     # current_picture = sql_controller.get_greatest_altitude_picture()
-    current_picture = sql_controller.get_least_altitude_picture()
+    # current_picture = sql_controller.get_least_altitude_picture()
 
     while True:
         keycode = ord(getch.getch())

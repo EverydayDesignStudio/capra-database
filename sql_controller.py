@@ -4,7 +4,8 @@ import sqlite3
 from capra_data_types import Picture, Hike
 from sql_statements import SQLStatements
 
-SQLITE_DB = 'capra.db'
+# SQLITE_DB = 'capra.db'
+SQLITE_DB = '/Volumes/Capra/capra-projector.db'
 
 
 class SQLController:

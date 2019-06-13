@@ -1,23 +1,25 @@
-CREATE DATABASE capra_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE capra_db;
+----------------------------------------------------------------
+-- CAMERA BUILD
+CREATE DATABASE capra_camera CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE capra_camera;
 
 DROP TABLE IF EXISTS "hikes";
 
 CREATE TABLE "hikes" (
-	"hike_id"	INTEGER UNIQUE,
+	"hike_id"	INTEGER PRIMARY KEY AUTOINCREMENT,
 	"average_altitude"	REAL,
 	"average_color"	TEXT,
 	"start_time"	REAL UNIQUE,
 	"end_time"	REAL UNIQUE,
 	"pictures"	INTEGER,
-	"created_date_time" REAL DEFAULT CURRENT_TIMESTAMP,
-	"updated_date_time" REAL DEFAULT CURRENT_TIMESTAMP
+	"created_date_time" TEXT DEFAULT CURRENT_TIMESTAMP,
+	"updated_date_time" TEXT DEFAULT CURRENT_TIMESTAMP
 );
 
 DROP TABLE IF EXISTS "pictures";
 
+-- no picture_id, this is added upon transfer back to projector
 CREATE TABLE "pictures" (
-	"picture_id"	INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
 	"time"	REAL UNIQUE,
 	"altitude"	REAL,
 	"color"	TEXT,
@@ -26,23 +28,81 @@ CREATE TABLE "pictures" (
 	"camera1"	TEXT,
 	"camera2"	TEXT,
 	"camera3"	TEXT,
-	"created_date_time" REAL DEFAULT CURRENT_TIMESTAMP,
-	"updated_date_time" REAL DEFAULT CURRENT_TIMESTAMP,
+	"created_date_time" TEXT DEFAULT CURRENT_TIMESTAMP,
+	"updated_date_time" TEXT DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY("hike") REFERENCES "hikes"("hike_id")
 );
 
 
-/* Average Altitude */
-SELECT AVG(altitude) FROM pictures WHERE hike=8;
+----------------------------------------------------------------
+-- PROJECTOR BUILD
+CREATE DATABASE capra_projector CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE capra_projector;
 
-/* First Time */
-SELECT time FROM pictures WHERE hike=8 ORDER BY time ASC LIMIT 1;
+DROP TABLE IF EXISTS "hikes";
 
-/* Last Time */
-SELECT time FROM pictures WHERE hike=8 ORDER BY time DESC LIMIT 1;
+-- hike_id is not PRIMARY KEY AUTOINCREMENT since it will never be incremented on the projector
+-- and on off case it is, it could get out of sync with camera
+CREATE TABLE "hikes" (
+	"hike_id"	INTEGER UNIQUE,
+	"average_altitude"	REAL,
+	"average_color"	TEXT,
+	"start_time"	REAL UNIQUE,
+	"end_time"	REAL UNIQUE,
+	"pictures"	INTEGER,
+	"created_date_time" TEXT DEFAULT CURRENT_TIMESTAMP,
+	"updated_date_time" TEXT DEFAULT CURRENT_TIMESTAMP
+);
 
-/* Count of hike pictures */
-SELECT count(*) FROM pictures WHERE hike=8;
+DROP TABLE IF EXISTS "pictures";
+
+-- picture_id is here, but not in CAMERA db
+CREATE TABLE "pictures" (
+	"picture_id"	INTEGER PRIMARY KEY UNIQUE,
+	"time"	REAL UNIQUE,
+	"altitude"	REAL,
+	"color"	TEXT,
+	"hike"	INTEGER,
+	"index_in_hike"	INTEGER,
+	"camera1"	TEXT,
+	"camera2"	TEXT,
+	"camera3"	TEXT,
+	"created_date_time" TEXT DEFAULT CURRENT_TIMESTAMP,
+	"updated_date_time" TEXT DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY("hike") REFERENCES "hikes"("hike_id")
+);
+
+
+----------------------------------------------------------------
+-- Inserts into hikes and pictures on PROJECTOR DB
+INSERT INTO hikes (hike_id, average_altitude, average_color, start_time, end_time, pictures, created_date_time, updated_date_time) VALUES ({h}, {a}, '{c}', {st}, {et}, {p}, {cd}, {ud})
+
+INSERT INTO pictures (time, altitude, color, hike, index_in_hike, camera1, camera2, camera3, created_date_time, updated_date_time) VALUES ({t}, {a}, '{c}', {h}, {i}, '{c1}', '{c2}', '{c3}', {cd}, {ud})
+
+
+----------------------------------------------------------------
+-- Delete all items from a table
+DELETE FROM hikes;
+DELETE FROM pictures;
+
+
+----------------------------------------------------------------
+-- Calculate Values where hike=4
+
+-- Average Altitude
+SELECT AVG(altitude) FROM pictures WHERE hike=4;
+
+-- Calculate Average Color
+-- python.script()
+
+-- First Time
+SELECT time FROM pictures WHERE hike=4 ORDER BY time ASC LIMIT 1;
+
+-- Last Time
+SELECT time FROM pictures WHERE hike=4 ORDER BY time DESC LIMIT 1;
+
+-- Count of hike pictures
+SELECT count(*) FROM pictures WHERE hike=4;
 
 
 /* 

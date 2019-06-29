@@ -1,7 +1,7 @@
 ----------------------------------------------------------------
 -- CAMERA BUILD
-CREATE DATABASE capra_camera CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE capra_camera;
+CREATE DATABASE capra_camera.db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE capra_camera.db;
 
 DROP TABLE IF EXISTS "hikes";
 
@@ -12,6 +12,7 @@ CREATE TABLE "hikes" (
 	"start_time"	REAL UNIQUE,
 	"end_time"	REAL UNIQUE,
 	"pictures"	INTEGER,
+	"path" TEXT UNIQUE,
 	"created_date_time" TEXT DEFAULT CURRENT_TIMESTAMP,
 	"updated_date_time" TEXT DEFAULT CURRENT_TIMESTAMP
 );
@@ -25,13 +26,15 @@ CREATE TABLE "pictures" (
 	"color"	TEXT,
 	"hike"	INTEGER,
 	"index_in_hike"	INTEGER,
-	"camera1"	TEXT,
-	"camera2"	TEXT,
-	"camera3"	TEXT,
+	"camera1"	TEXT UNIQUE,
+	"camera2"	TEXT UNIQUE,
+	"camera3"	TEXT UNIQUE,
 	"created_date_time" TEXT DEFAULT CURRENT_TIMESTAMP,
 	"updated_date_time" TEXT DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY("hike") REFERENCES "hikes"("hike_id")
 );
+
+.save capra_camera.db;
 
 
 ----------------------------------------------------------------
@@ -50,6 +53,7 @@ CREATE TABLE "hikes" (
 	"start_time"	REAL UNIQUE,
 	"end_time"	REAL UNIQUE,
 	"pictures"	INTEGER,
+	"path" TEXT UNIQUE,
 	"created_date_time" TEXT DEFAULT CURRENT_TIMESTAMP,
 	"updated_date_time" TEXT DEFAULT CURRENT_TIMESTAMP
 );
@@ -64,9 +68,9 @@ CREATE TABLE "pictures" (
 	"color"	TEXT,
 	"hike"	INTEGER,
 	"index_in_hike"	INTEGER,
-	"camera1"	TEXT,
-	"camera2"	TEXT,
-	"camera3"	TEXT,
+	"camera1"	TEXT UNIQUE,
+	"camera2"	TEXT UNIQUE,
+	"camera3"	TEXT UNIQUE,
 	"created_date_time" TEXT DEFAULT CURRENT_TIMESTAMP,
 	"updated_date_time" TEXT DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY("hike") REFERENCES "hikes"("hike_id")

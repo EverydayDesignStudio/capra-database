@@ -6,7 +6,8 @@ from capra_data_types import Picture, Hike
 from sql_statements import SQLStatements
 
 # SQLITE_DB = 'capra.db'
-SQLITE_DB = '/Volumes/Capra/capra-projector.db'
+# SQLITE_DB = '/Volumes/Capra/capra-projector.db'
+SQLITE_DB = '/Users/Jordan/Developer/eds/capra-database/capra-projector.db'
 
 
 class CSVtoSQL:
@@ -18,6 +19,16 @@ class CSVtoSQL:
         for i in range(8, 16):
             path = f'/Volumes/Capra/jordan-hike{i}/meta.csv'
             folder = f'/jordan-hike{i}/'
+            self.add_pictures_from_csv(path, i, folder)
+
+            # self.add_hike_from_csv(i)
+
+    def add_from_old_hikes(self):
+        for i in range(1, 5):
+            path = f'/Users/Jordan/Developer/eds/capra-database/hike{i}/tmeta.csv'
+            folder = f'/hike{i}/'
+
+            # Need to change parameters from CSV to match
             self.add_pictures_from_csv(path, i, folder)
 
             # self.add_hike_from_csv(i)

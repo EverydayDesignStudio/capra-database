@@ -22,6 +22,8 @@ CREATE TABLE "pictures" (
 
 DROP TABLE IF EXISTS "hikes";
 
+-- hike_id is a PRIMARY KEY AUTOINCREMENT
+-- this is what maintains the hike count
 CREATE TABLE "hikes" (
 	"hike_id"	INTEGER PRIMARY KEY AUTOINCREMENT,
 	"average_altitude"	REAL,
@@ -52,9 +54,9 @@ CREATE TABLE "pictures" (
 	"color"	TEXT,
 	"hike"	INTEGER,
 	"index_in_hike"	INTEGER,
-	"camera1"	TEXT UNIQUE,
-	"camera2"	TEXT UNIQUE,
-	"camera3"	TEXT UNIQUE,
+	"camera1"	TEXT,
+	"camera2"	TEXT,
+	"camera3"	TEXT,
 	"created_date_time" TEXT DEFAULT CURRENT_TIMESTAMP,
 	"updated_date_time" TEXT DEFAULT CURRENT_TIMESTAMP,
 	FOREIGN KEY("hike") REFERENCES "hikes"("hike_id")

@@ -48,11 +48,20 @@ def main():
     connection_projector.commit()
     print('Finished inserting {n} hikes from camera'.format(n=num_hikes))
 
+    # TODO test this functionality first
+    # Delete the pictures and hikes on the camera database
+    # cursor_projector.execute("DELETE FROM camera.pictures")
+    # connection_projector.commit()
+    # cursor_projector.execute("DELETE FROM camera.hikes")
+    # connection_projector.commit()
 
 # def insert_pictures():
 #     print('')
 
 # def insert_hikes():
+#     print('')
+
+# def delete_pictures_hikes():
 #     print('')
 
 if __name__ == "__main__":
